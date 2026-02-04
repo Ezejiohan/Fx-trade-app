@@ -7,21 +7,32 @@ import { WalletsModule } from './wallets/wallets.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { FxModule } from './fx/fx.module';
 
+/**
+ * Root application module.
+ * - Loads configuration globally via `@nestjs/config`
+ * - Configures TypeORM (Postgres via DATABASE_URL or local SQLite fallback)
+ * - Registers feature modules (Auth, Users, Wallets, Transactions, Fx)
+ */
 @Module({
   imports: [
+    // Load .env and make env variables available app-wide
     ConfigModule.forRoot({ isGlobal: true }),
+
+    // Configure TypeORM asynchronously using environment variables
     TypeOrmModule.forRootAsync({
       useFactory: () => {
         const url = process.env.DATABASE_URL;
         if (url) {
+          // Production-like configuration using Postgres
           return {
             type: 'postgres',
             url,
-            synchronize: true,
+            synchronize: true, // NOTE: for development only
             autoLoadEntities: true,
           } as any;
         }
-        // Fallback to local SQLite for quick local testing without DB setup
+
+        // Fallback to local SQLite for quick local development/testing
         return {
           type: 'sqlite',
           database: process.env.SQLITE_DB || 'dev.db',
@@ -30,6 +41,8 @@ import { FxModule } from './fx/fx.module';
         } as any;
       },
     }),
+
+    // Application feature modules
     AuthModule,
     UsersModule,
     WalletsModule,

@@ -15,3 +15,7 @@ export class WalletBalance {
   @Column('numeric', { default: 0 })
   amount: string; // store as string to preserve precision
 }
+
+// WalletBalance entity tracks per-user balance for each currency.
+// - We store `amount` as a string to avoid floating point precision issues in examples.
+// - For production consider using a decimal/numeric type with an appropriate scale.

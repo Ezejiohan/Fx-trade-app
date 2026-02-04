@@ -17,3 +17,7 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 }
+
+// User entity: represents application user.
+// - `verified` indicates whether OTP verification completed.
+// - `passwordHash` reserved for future password-based auth (not used in this assessment).
