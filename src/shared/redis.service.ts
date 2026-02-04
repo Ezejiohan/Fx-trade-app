@@ -6,12 +6,22 @@ export class RedisService {
   private client?: Redis;
   private fallback = new Map<string, string>();
   private logger = new Logger('RedisService');
+  private connectionAttempted = false;
 
   constructor() {
     const url = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
     try {
       this.client = new Redis(url);
-      this.client.on('error', (err) => this.logger.warn('Redis error: ' + err));
+      this.client.on('error', (err) => {
+        if (!this.connectionAttempted) {
+          this.logger.warn('Redis unavailable, using in-memory fallback');
+          this.connectionAttempted = true;
+        }
+      });
+      this.client.on('connect', () => {
+        this.logger.log('Redis connected successfully');
+        this.connectionAttempted = true;
+      });
     } catch (err) {
       this.logger.warn('Redis connection failed, using in-memory fallback');
       this.client = undefined;

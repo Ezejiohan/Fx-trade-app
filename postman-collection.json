@@ -1,0 +1,218 @@
+{
+  "info": {
+    "name": "FX Trading API",
+    "description": "Collection for testing FX Trading Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user and send OTP via email"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/verify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "verify"]
+            },
+            "description": "Verify OTP and activate user account (replace OTP with value from server logs)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Wallets",
+      "item": [
+        {
+          "name": "Fund Wallet (NGN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"currency\": \"NGN\",\n  \"amount\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallet/fund",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallet", "fund"]
+            },
+            "description": "Fund wallet with NGN (or any currency). Replace userId with actual user ID from registration."
+          },
+          "response": []
+        },
+        {
+          "name": "Fund Wallet (EUR)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"currency\": \"EUR\",\n  \"amount\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallet/fund",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallet", "fund"]
+            },
+            "description": "Fund wallet with EUR for testing conversion"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Wallet Balances",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"550e8400-e29b-41d4-a716-446655440000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallet",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallet"]
+            },
+            "description": "Retrieve all wallet balances for a user"
+          },
+          "response": []
+        },
+        {
+          "name": "Convert NGN to USD",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"from\": \"NGN\",\n  \"to\": \"USD\",\n  \"amount\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallet/convert",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallet", "convert"]
+            },
+            "description": "Convert 1000 NGN to USD using real-time FX rates"
+          },
+          "response": []
+        },
+        {
+          "name": "Convert EUR to NGN",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"from\": \"EUR\",\n  \"to\": \"NGN\",\n  \"amount\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallet/convert",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallet", "convert"]
+            },
+            "description": "Convert 50 EUR to NGN (first fund EUR wallet using fund endpoint)"
+          },
+          "response": []
+        },
+        {
+          "name": "Convert USD to EUR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"from\": \"USD\",\n  \"to\": \"EUR\",\n  \"amount\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/wallet/convert",
+              "host": ["{{base_url}}"],
+              "path": ["api", "wallet", "convert"]
+            },
+            "description": "Convert USD to EUR (fund USD wallet first)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
